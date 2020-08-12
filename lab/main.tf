@@ -184,12 +184,9 @@ resource "aws_instance" "webserver" {
   associate_public_ip_address = true
   tags                        = module.tags_webserver.tags
   depends_on                  = [aws_instance.api]
-  //  api_public_ip               = aws_instance.api.0.user_data
   user_data = <<-EOF
           #!/bin/bash
           echo " ${aws_instance.api.0.public_ip}" > /home/ubuntu/public-ip.txt
-          systemctl start apache2
-          systemctl enable apache2
           EOF
 
 }
@@ -201,8 +198,6 @@ resource "aws_instance" "api" {
   user_data                   = <<-EOF
           #!/bin/bash
           curl ifconfig.co > /home/ubuntu/public-ip.txt
-          systemctl start apache2
-          systemctl enable apache2
           EOF
   subnet_id                   = aws_subnet.webserver[count.index].id
   vpc_security_group_ids      = [aws_security_group.webserver.id]

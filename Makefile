@@ -44,6 +44,8 @@ copy:
 
 connect:
 	ssh -i ssh/id_rsa ubuntu@$$(terraform output -json | jq '.bastion_ip.value' | xargs)
+	ssh -i id_rsa ubuntu@$$(terraform output -json | jq '.api_ip.value' | tr -d "[]" |xargs)
+	cat public-ip.txt
 
 init:
 	rm -rf .terraform ssh
