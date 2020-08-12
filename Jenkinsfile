@@ -20,16 +20,6 @@ pipeline {
               sh 'make init'
           }
       }
-      stage("workspace") {
-          steps {
-              sh """
-terraform workspace select jenkins-lab-3
-if [[ \$? -ne 0 ]]; then
-  terraform workspace new jenkins-lab-3
-fi
-"""
-          }
-      }
       stage("plan") {
           steps {
               sh 'make plan'
