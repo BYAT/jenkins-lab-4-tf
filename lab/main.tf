@@ -184,7 +184,7 @@ resource "aws_instance" "webserver" {
   associate_public_ip_address = true
   tags                        = module.tags_webserver.tags
   depends_on                  = [aws_instance.api]
-  user_data       = aws_instance.api.user_data
+  user_data       = aws_instance.api.0.user_data
           
 }
 
