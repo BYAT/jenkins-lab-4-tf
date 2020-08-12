@@ -15,7 +15,7 @@ start:
 		   --hostname "$$(basename $$PWD)" \
 		   --name "$$(basename $$PWD)" \
 		   -w /$$(basename $$PWD) \
-		   bryandollery/terraform-packer-aws-alpine:latest bash
+		   bryandollery/terraform-packer-aws-alpine bash
 
 exec:
 	docker exec -it "$$(basename $$PWD)" bash || true
@@ -47,6 +47,7 @@ connect:
 
 init:
 	docker pull bryandollery/terraform-packer-aws-alpine
+	docker run -it --rm hashicorp/terraform:latest terraform --version
 	rm -rf .terraform ssh
 	mkdir ssh
 	time terraform init -backend-config="bucket=devops-bootcamp-remote-state-$$TF_NAMESPACE" -backend-config="key=$$TF_NAMESPACE/labs/terraform.tfstate" -backend-config="dynamodb_table=devops-bootcamp-locks-$$TF_NAMESPACE"
