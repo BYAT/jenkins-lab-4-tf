@@ -46,8 +46,6 @@ connect:
 	ssh -i ssh/id_rsa ubuntu@$$(terraform output -json | jq '.bastion_ip.value' | xargs)
 
 init:
-	docker pull bryandollery/terraform-packer-aws-alpine
-	docker run -it --rm hashicorp/terraform:latest terraform --version
 	rm -rf .terraform ssh
 	mkdir ssh
 	time terraform init -backend-config="bucket=devops-bootcamp-remote-state-$$TF_NAMESPACE" -backend-config="key=$$TF_NAMESPACE/labs/terraform.tfstate" -backend-config="dynamodb_table=devops-bootcamp-locks-$$TF_NAMESPACE"
