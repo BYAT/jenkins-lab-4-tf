@@ -1,7 +1,7 @@
 pipeline {
   agent {
     docker {
-      image "bryandollery/terraform-packer-aws-alpine"
+      image "bryandollery/terraform-packer-aws-alpine:latest"
       args "-u root --entrypoint='' --rm"
     }
   }
