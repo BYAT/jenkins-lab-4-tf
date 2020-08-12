@@ -184,17 +184,23 @@ resource "aws_instance" "webserver" {
   associate_public_ip_address = true
   tags                        = module.tags_webserver.tags
   depends_on                  = [aws_instance.api]
-  user_data       = aws_instance.api.0.user_data
-          
+  //  api_public_ip               = aws_instance.api.0.user_data
+  user_data = <<-EOF
+          #!/bin/bash
+          echo " ${aws_instance.api.0.public_ip}" > /home/ubuntu/public-ip.txt
+          systemctl start apache2
+          systemctl enable apache2
+          EOF
+
 }
 
 resource "aws_instance" "api" {
   count                       = 1
   ami                         = data.aws_ami.latest_webserver.id
   instance_type               = var.instance_type
-  user_data       = <<-EOF
+  user_data                   = <<-EOF
           #!/bin/bash
-          echo curl ifconfig.co > /home/ubuntu/public-ip.txt
+          curl ifconfig.co > /home/ubuntu/public-ip.txt
           systemctl start apache2
           systemctl enable apache2
           EOF
