@@ -125,6 +125,13 @@ resource "aws_security_group" "bastion" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  /////////////////////
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
 resource "aws_security_group" "webserver" {
@@ -184,11 +191,11 @@ resource "aws_instance" "webserver" {
   associate_public_ip_address = true
   tags                        = module.tags_webserver.tags
   depends_on                  = [aws_instance.api]
-  user_data = <<-EOF
+  user_data                   = <<-EOF
           #!/bin/bash
-          echo " ${aws_instance.api.0.public_ip}" > /home/ubuntu/public-ip.txt
+          echo " ${aws_instance.api.0.public_ip}" >> /home/ubuntu/api/index.html
+          cat /home/ubuntu/api/index.html
           EOF
-
 }
 
 resource "aws_instance" "api" {

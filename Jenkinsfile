@@ -15,19 +15,19 @@ pipeline {
     TF_NAMESPACE="bashayr"
   }
   stages {
-      stage("init") {
+      stage("init") { // the 1st stage in the job 
           steps {
-              sh 'make init'
+              sh 'make init' // it will execute make init command >> from Makefile
           }
       }
-      stage("plan") {
+      stage("plan") {// the 2nd stage in the job 
           steps {
-              sh 'make plan'
+              sh 'make plan'// it will execute make plan command >> from Makefile
           }
       }
-      stage("apply") {
+      stage("apply") { // the 3rd stage in the job 
           steps {
-              sh 'make apply'
+              sh 'make apply'// it will execute make apply command >> from Makefile
           }
       }
   }
